@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/report/admin-report-layout}"
+      >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Reports</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Revenue chart</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <div class="btn-group">
+        <a class="btn btn-success" th:href="@{/admin/report?day=7}">7 Days</a>
+        <a class="btn btn-success" th:href="@{/admin/report?day=14}">14 Days</a>
+        <a class="btn btn-success" th:href="@{/admin/report?day=30}">30 Days</a>
+<!--        <form th:action="@{/admin/report?day=7}" method="get" style="display: inline;">-->
+<!--            <button type="submit" class="btn btn-success">7 Days</button>-->
+<!--        </form>-->
+<!--        <form th:action="@{/admin/report?day=14}" method="get" style="display: inline;">-->
+<!--            <button type="submit" class="btn btn-success">14 Days</button>-->
+<!--        </form>-->
+<!--        <form th:action="@{/admin/report?day=30}" method="get" style="display: inline;">-->
+<!--            <button type="submit" class="btn btn-success">30 Days</button>-->
+<!--        </form>-->
+    </div>
+    <canvas id="revenueChart" style="max-height: 500px" class="col-md-9 mx-auto"></canvas>
+    <div>
+        <h3 th:text="'Total revenue: '+${total}+' VNĐ'"></h3>
+    </div>
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+
+        const revenueData = /*[[${revenueData}]]*/ {};
+
+
+        const labels = Object.keys(revenueData);
+        const data = Object.values(revenueData);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Doanh thu',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    }
+                }
+            }
+        });
+    });
+    /*]]>*/
+</script>

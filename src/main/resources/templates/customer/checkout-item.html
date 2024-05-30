@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{customer/customer-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <h2 style="text-align: center">THÔNG TIN ĐƠN HÀNG</h2>
+    <center>
+        <table class="table col-md-9">
+            <tr>
+                <th>Tên khách hàng</th>
+                <td th:text="${order.account.fullname}"></td>
+            </tr>
+            <tr>
+                <th>Địa chỉ</th>
+                <td th:text="${order.address}"></td>
+            </tr>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <td th:text="${order.orderCode}"></td>
+            </tr>
+            <tr>
+                <th>Trạng thái</th>
+                <td>
+                    <span th:if="${order.status==1}" th:text="Processing"></span>
+                    <span th:if="${order.status==0}" th:text="Delivered"></span>
+                    <span th:if="${order.status==2}" th:text="Cancelling"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>Mô tả</th>
+                <td th:text="${order.description}"></td>
+            </tr>
+            <tr>
+                <th>Tổng tiền</th>
+                <td th:text="${order.totalMoney}+' VNĐ'"></td>
+            </tr>
+        </table>
+    </center>
+    <center>
+        <table class="table col-md-9">
+            <h3 style="text-align: center">THÔNG TIN SẢN PHẨM</h3>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+            </tr>
+            <tr th:each="order:${orderItems}">
+                <td th:text="${order.productDetail.product.name}"></td>
+                <td th:text="${order.quantity}"></td>
+                <td th:text="${order.productDetail.price}+' VNĐ'"></td>
+            </tr>
+            <tr>
+                <td><h4>Tổng:</h4></td>
+                <td></td>
+                <td><h4 th:text="${order.totalMoney}+' VNĐ'"></h4></td>
+            </tr>
+        </table>
+    </center>
+</div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{customer/customer-layout}" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <div class="container-fluid pb-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-5 mb-30">
+                <div id="product-carousel1" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner bg-light">
+                        <div class="carousel-item active">
+                            <img class="w-100 h-100"
+                                 th:src="${product.product.image==null}?'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg':'/'+${product.product.image}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 h-auto mb-30">
+                <div class="h-100 bg-light p-30">
+                    <h3 th:text="${product.product.name}"></h3>
+                    <div class="d-flex mb-3">
+                        <div class="text-primary mr-2">
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star-half-alt"></small>
+                            <small class="far fa-star"></small>
+                        </div>
+                        <small class="pt-1">(99 Reviews)</small>
+                    </div>
+                    <h4 th:text="${product.product.publisher!=null}?'Nhà cung cấp: '+${product.product.publisher.name}:'No publisher'"></h4>
+                    <h4 th:text="${product.product.author!=null}?'Tác giả: '+${product.product.author.name}:'No author'"></h4>
+                    <h4 th:text="'Hình thức bìa: '+${product.product.form}"></h4>
+                    <h4 th:text="'Năm xuất bản: '+${product.product.publishYear}"></h4>
+                    <h3 class="font-weight-semi-bold mb-4" th:text="${product.price}+' VNĐ'">$150.00</h3>
+                    <p class="mb-4"
+                       th:text="${product.product.description}"></p>
+                    <div class="d-flex align-items-center mb-4 pt-2">
+                        <form th:action="@{'/add-to-cart/'+${product.id}}" method="post">
+                            <button type="submit" class="btn btn-primary px-3">
+                                <i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ hàng
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main product image carousel -->
+        <div id="product-carousel" class="carousel slide col-md-6 mx-auto" data-ride="carousel">
+            <div class="carousel-inner bg-light">
+                <div th:each="image, iterStat : ${preImgs}" th:classappend="${iterStat.index == 0} ? 'active' : ''" class="carousel-item">
+                    <img class="w-100 h-100 img-responsive" th:src="@{'/'+${image}}">
+                </div>
+            </div>
+            <a class="carousel-control-prev" th:href="@{#product-carousel}" role="button" data-slide="prev">
+                <i class="fa fa-2x fa-angle-left text-dark"></i>
+            </a>
+            <a class="carousel-control-next" th:href="@{#product-carousel}" role="button" data-slide="next">
+                <i class="fa fa-2x fa-angle-right text-dark"></i>
+            </a>
+        </div>
+
+        <!-- Thumbnail previews -->
+<!--        <div class="row mt-3">-->
+<!--            <div class="col-3" th:each="image, iterStat : ${preImgs}">-->
+<!--                <img class="img-thumbnail" style="height: 500px;" th:src="@{'/'+${image}}" data-target="#product-carousel" th:data-slide-to="${iterStat.index}">-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="bg-light p-30">
+                    <div class="nav nav-tabs mb-4">
+                        <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">
+                            Đánh giá
+                        </a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">
+                            Thông tin chi tiết
+                        </a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">
+                            Video đánh giá sản phẩm
+                        </a>
+                    </div>
+                    <div class="tab-content">
+
+                        <!--End review video-->
+                        <!--Start review form-->
+                        <div class="tab-pane fade show active" id="tab-pane-1" th:fragment="reviewFragment">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="mb-4">Đánh giá của khách hàng</h4>
+                                    <div th:each="revi : ${tPage}" class="media mb-4">
+                                        <img src="https://cellphones.com.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                        <div class="media-body">
+                                            <h6><span th:text="${revi.account.fullname}"></span><small> - <i th:text="${revi.createdOn}"></i></small></h6>
+                                            <div class="text-primary mb-2">
+                                                <span th:each="star : ${#numbers.sequence(1, 5)}">
+                                                    <i th:classappend="${star <= revi.rating ? 'fas fa-star' : (star - 0.5 <= revi.rating ? 'fas fa-star-half-alt' : 'far fa-star')}"></i>
+                                                </span>
+                                            </div>
+                                            <p th:text="${revi.review}"></p>
+                                        </div>
+                                    </div>
+                                    <nav aria-label="Page navigation example" th:if="${tPage != null and tPage.totalPages > 1}">
+                                        <ul class="pagination">
+                                            <li class="page-item" th:class="${!tPage.hasPrevious() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/product-detail/'+${product.id}+'?page='+${tPage.number-1}}">Previous</a></li>
+                                            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, tPage.totalPages - 1)}"
+                                                th:class="${tPage.number == pageNum ? 'page-item active' : 'page-item'}"><a class="page-link" th:href="@{'/product-detail/'+${product.id}+'?page='+${pageNum}}" th:text="${pageNum + 1}"></a></li>
+                                            <li class="page-item" th:class="${!tPage.hasNext() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/product-detail/'+${product.id}+'?page='+${tPage.number + 1}}">Next</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="mb-4">Đánh giá sản phẩm</h4>
+                                    <form role="form"
+                                          method="post"
+                                          novalidate
+                                          th:action="@{'/review/create/'+${product.id}}"
+                                          th:object="${reviewObj}"
+                                          enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="review">Đánh giá sản phẩm</label>
+                                            <textarea class="form-control" id="review" th:field="*{review}"
+                                                      cols="30" rows="5"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="rating">Số sao</label>
+                                            <select class="form-select" id="rating" th:field="*{rating}">
+                                                <option th:each="i: ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <input type="submit" value="Gửi đánh giá" class="btn btn-primary px-3">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="tab-pane-2">
+                            <h4 class="mb-3">
+                                Thông tin chi tiết
+                            </h4>
+                            <p th:text="${product.product.description}">
+                            </p></br>
+                            <h5 th:text="${product.product.publisher!=null}?'Nhà cung cấp: '+${product.product.publisher.name}:'No publisher'"></h5>
+                            <h5 th:text="${product.product.author!=null}?'Tác giả: '+${product.product.author.name}:'No author'"></h5>
+                            <h5 th:text="'Hình thức bìa: '+${product.product.form}"></h5>
+                            <h5 th:text="'Năm xuất bản: '+${product.product.publishYear}"></h5>
+                            <h5 th:text="'Ngôn ngữ: '+${product.product.language}"></h5>
+                            <h5 th:text="'Số trang: '+${product.product.pageNumber}"></h5>
+                        </div>
+                        <!--Start review video-->
+                        <div class="tab-pane fade" id="tab-pane-3">
+                            <h4 class="mb-3">Video đánh giá sản phẩm</h4>
+                            <div th:each="video : ${videos}">
+                                <div class="video-item row">
+                                    <img class="col-md-2" th:src="${video.thumbnailUrl}" alt="Thumbnail">
+                                    <div class="col-md-6">
+                                        <h3  ><a style="color: #0b0b0b" th:text="${video.title}" th:href="@{'/video/'+${video.videoId}}"></a></h3>
+                                        <p th:text="${video.publishTime}">Publish Date</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </br>
+                            <div>
+                                <form role="form" method="post" novalidate th:action="@{/video/search}" enctype="multipart/form-data">
+                                    <input type="text" class="form-control" placeholder="Tìm kiếm video đánh giá" name="searchQuery">
+                                    <button class="btn btn-success" type="submit">Tìm kiếm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Shop Detail End -->
+
+</div>
+</body>
+</html>

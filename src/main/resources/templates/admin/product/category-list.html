@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Product</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Category</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <table class="table table-striped">
+        <thead>
+        <a class="btn btn-success" th:href="@{/admin/category/create}">New</a>
+        <th>id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+        </thead>
+        <tbody th:each="tUnit: ${tPage}">
+        <tr>
+            <th th:text="${tUnit.id}"></th>
+            <th ><a th:text="${tUnit.name}" th:href="@{'/admin/category/' + ${tUnit.id}}"></a></th>
+            <th th:text="${tUnit.description}"></th>
+            <th>
+                <div class="button-group">
+                    <form th:action="@{'/admin/category/'+${tUnit.id}}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Chi tiết</button>
+                    </form>
+                    <form th:action="@{'/admin/category/edit/'+${tUnit.id}}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Sửa</button>
+                    </form>
+                    <form th:action="@{/admin/category/delete/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" th:if="${tPage != null and tPage.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:class="${!tPage.hasPrevious() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/category(page=${tPage.number-1})}">Previous</a></li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, tPage.totalPages - 1)}"
+                th:class="${tPage.number == pageNum ? 'page-item active' : 'page-item'}"><a class="page-link" th:href="@{/admin/category(page=${pageNum})}" th:text="${pageNum + 1}"></a></li>
+            <li class="page-item" th:class="${!tPage.hasNext() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/category(page=${tPage.number + 1})}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

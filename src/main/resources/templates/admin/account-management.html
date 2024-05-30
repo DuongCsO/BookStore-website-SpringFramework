@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/account/admin-account-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Account</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Account</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <table class="table table-striped">
+        <thead>
+        <th>id</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Fullname</th>
+        <th>Role</th>
+        <th></th>
+        </thead>
+        <tbody th:each="tUnit: ${tPage}">
+        <tr>
+            <th th:text="${tUnit.id}"></th>
+            <th th:text="${tUnit.username}"></th>
+            <th th:text="${tUnit.email}"></th>
+            <th th:text="${tUnit.fullname}"></th>
+            <th th:text="${tUnit.role}"></th>
+            <th>
+                <div class="button-group" >
+                    <form th:action="@{/admin/account/set-admin/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+                        <button th:class="${tUnit.role==null||#strings.toString(tUnit.role)=='USER'}?'btn btn-warning':'btn btn-warning disabled'"  type="submit">Set ADMIN</button>
+                    </form>
+                    <form th:action="@{/admin/account/set-user/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+                        <button th:class="${tUnit.role==null||#strings.toString(tUnit.role)=='ADMIN'}?'btn btn-success':'btn btn-success disabled'"  type="submit">Set USER</button>
+                    </form>
+                    <form th:action="@{/admin/account/delete/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+                        <button  class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" th:if="${tPage != null and tPage.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:class="${!tPage.hasPrevious() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/account(page=${tPage.number-1})}">Previous</a></li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, tPage.totalPages - 1)}"
+                th:class="${tPage.number == pageNum ? 'page-item active' : 'page-item'}"><a class="page-link" th:href="@{/admin/account(page=${pageNum})}" th:text="${pageNum + 1}"></a></li>
+            <li class="page-item" th:class="${!tPage.hasNext() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/account(page=${tPage.number + 1})}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

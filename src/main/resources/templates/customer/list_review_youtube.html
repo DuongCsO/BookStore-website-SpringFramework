@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{customer/customer-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <center>
+        <div class="col-md-9">
+            <form role="form" method="post" novalidate th:action="@{/video/search}" enctype="multipart/form-data">
+                <input type="text" class="form-control" placeholder="Tìm kiếm video đánh giá" name="searchQuery">
+                <button class="btn btn-success" type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+        <div th:each="video : ${videos}" class="col-md-9">
+            <div class="video-item row">
+                <img class="col-md-2" th:src="${video.thumbnailUrl}" alt="Thumbnail">
+                <div class="col-md-6">
+                    <h3  ><a style="color: #0b0b0b" th:text="${video.title}" th:href="@{'/video/'+${video.videoId}}"></a></h3>
+                    <p th:text="${video.publishTime}">Publish Date</p>
+                </div>
+            </div>
+        </div>
+    </center>
+</div>
+</body>
+</html>

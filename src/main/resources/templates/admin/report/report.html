@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/report/admin-report-layout}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Reports</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Revenue In 7 days</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+<center>
+    <div class="row">
+        <div class="col-md-3" style="margin: 50px; background: #a94442">
+            <h3>Products</h3>
+            <h2 th:text="${totalProduct}"></h2>
+        </div>
+        <div class="col-md-3" style="margin: 50px; background: #2eb85c">
+            <h3>Orders</h3>
+            <h2 th:text="${totalOrder}"></h2>
+        </div>
+        <div class="col-md-3" style="margin: 50px; background: #0d6efd">
+            <h3>Categories</h3>
+            <h2 th:text="${totalCate}"></h2>
+        </div>
+    </div>
+</center>
+</div>
+</body>
+</html>

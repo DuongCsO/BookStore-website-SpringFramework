@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{customer/customer-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <div class="row px-xl-5">
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="productDetail:${tPage}">
+            <div class="product-item bg-light mb-4">
+                <div height="500px"
+                     class="product-img position-relative overflow-hidden">
+                    <a th:href="@{'/product-detail/'+${productDetail.id}}">
+                        <img class="img-fluid w-100"
+                             style="height: 500px;"
+                             th:src="${productDetail.product.image==null}?'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg':'/'+${productDetail.product.image}"
+                             alt="">
+                    </a>
+                    <div class="product-action">
+                        <form th:action="@{'/add-to-cart/'+${productDetail.id}}" method="post">
+                            <button class="btn btn-outline-dark btn-square" type="submit">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                        <a class="btn btn-outline-dark btn-square" th:href="@{'/product-detail/'+${productDetail.id}}">
+                            <i class="fa fa-search" ></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="text-center p-4 col-md-12">
+                    <a class="h6 text-decoration-none text-truncate text-uppercase text-wrap text-break"
+                       style="text-overflow: ellipsis; width: 80%;"
+                       th:href="@{'/product-detail/'+${productDetail.id}}"
+                       th:text="${productDetail.product.name}">
+                    </a>
+                    <div class="d-flex align-items-center justify-content-center mt-2">
+                        <h5 th:text="${productDetail.price}+' VNĐ'"></h5>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center mb-1">
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small>(99)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

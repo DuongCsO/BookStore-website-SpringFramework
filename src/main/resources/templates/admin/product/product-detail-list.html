@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Product</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Product Detail</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <table class="table table-striped">
+        <thead>
+        <a class="btn btn-success" th:href="@{/admin/product-detail/create}">New</a>
+        <th>id</th>
+        <th>Price</th>
+        <th>Name</th>
+        <th></th>
+        </thead>
+        <tbody th:each="product: ${tPage}">
+        <tr>
+            <th th:text="${product.id}"></th>
+            <th th:text="${product.price}"></th>
+            <th th:text="${product.product.name}"></th>
+            <th>
+                <div class="button-group">
+                    <form th:action="@{'/admin/product-detail/'+${product.id}}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Detail</button>
+                    </form>
+                    <form th:action="@{'/admin/product-detail/edit/'+${product.id}}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Edit</button>
+                    </form>
+                    <form th:action="@{/admin/product-detail/delete/{id}(id=${product.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" th:if="${tPage != null and tPage.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:class="${!tPage.hasPrevious() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/product-detail(page=${tPage.number-1})}">Previous</a></li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, tPage.totalPages - 1)}"
+                th:class="${tPage.number == pageNum ? 'page-item active' : 'page-item'}"><a class="page-link" th:href="@{/admin/product-detail(page=${pageNum})}" th:text="${pageNum + 1}"></a></li>
+            <li class="page-item" th:class="${!tPage.hasNext() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/product-detail(page=${tPage.number + 1})}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

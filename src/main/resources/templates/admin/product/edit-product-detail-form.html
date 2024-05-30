@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Product</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Product Detail</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <h1>EDIT PRODUCT DETAIL</h1>
+    <form role="form" method="post" th:action="@{'/admin/product-detail/edit/'+${tForm.id}}" th:object="${tForm}" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Type</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="type" id="typeProduct" th:field="*{type}" value="true">
+                <label class="form-check-label">Product</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="type" id="typeComboProduct" th:field="*{type}" value="false">
+                <label class="form-check-label">Combo Product</label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Price</label>
+            <div class="input-group has-validation">
+                <input type="text" th:class="${#fields.hasErrors('Price')?'form-control  is-invalid':'form-control'}" id="Price" name="Price" th:field="*{Price}">
+                <div th:if="${#fields.hasErrors('Price')}" class="invalid-feedback">
+                    <ul th:each="err : ${#fields.errors('Price')}">
+                        <li th:text="${err}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3" id="productDiv">
+            <label class="form-label">Product</label>
+            <select class="form-select" th:id="product" th:field="*{product}" >
+                <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                <option th:value="${null}" th:text="Empty"></option>
+            </select>
+        </div>
+        <div class="mb-3" id="comboProductDiv">
+            <label class="form-label">Combo Product</label>
+            <select class="form-select" th:id="comboProduct" th:field="*{comboProduct}" >
+                <option th:each="comboProduct : ${comboProducts}" th:value="${comboProduct.id}" th:text="${comboProduct.name}"></option>
+                <option th:value="${null}"  th:text="Empty"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-dark" th:href="@{/admin/product}">Back</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    var typeProduct = document.getElementById('typeProduct');
+    var typeComboProduct = document.getElementById('typeComboProduct');
+    var productDiv = document.getElementById('productDiv');
+    var comboProductDiv = document.getElementById('comboProductDiv');
+    document.getElementById("typeProduct").checked = true;
+    productDiv.style.display = 'block';
+    comboProductDiv.style.display = 'none';
+    typeProduct.addEventListener('change', function() {
+        if (typeProduct.checked) {
+            productDiv.style.display = 'block';
+            comboProductDiv.style.display = 'none';
+        }
+    });
+
+    typeComboProduct.addEventListener('change', function() {
+        if (typeComboProduct.checked) {
+            productDiv.style.display = 'none';
+            comboProductDiv.style.display = 'block';
+        }
+    });
+</script>

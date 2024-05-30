@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/order/admin-order-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Order</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Order</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <table class="table table-striped">
+        <thead>
+        <th>id</th>
+        <th>User</th>
+        <th>Payment Method</th>
+        <th>Address</th>
+        <th>Order Code</th>
+        <th>Description</th>
+        <th>Total Money</th>
+        <th>Status</th>
+        <th></th>
+        </thead>
+        <tbody th:each="tUnit: ${tPage}">
+        <tr>
+            <th th:text="${tUnit.id}"></th>
+            <th th:text="${tUnit.account.fullname}"></th>
+            <th th:text="${tUnit.paymentMethod!=null}?${tUnit.paymentMethod.name}:'No payment method'"></th>
+            <th th:text="${tUnit.address}"></th>
+            <th th:text="${tUnit.orderCode==null}?'Null':${tUnit.orderCode}"></th>
+            <th th:text="${tUnit.description}"></th>
+            <th th:text="${tUnit.totalMoney}"></th>
+            <th>
+                <span th:if="${tUnit.status==1}" th:text="Processing"></span>
+                <span th:if="${tUnit.status==0}" th:text="Delivered"></span>
+                <span th:if="${tUnit.status==2}" th:text="Cancelling"></span>
+            </th>
+            <th>
+                <div class="button-group">
+                    <form th:if="${tUnit.status==1}" th:action="@{'/admin/order/set-status/'+${tUnit.id}+'/0'}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Delivered</button>
+                    </form>
+                    <form th:if="${tUnit.status==1}" th:action="@{'/admin/order/set-status/'+${tUnit.id}+'/2'}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-warning">Cancelling</button>
+                    </form>
+                    <form th:action="@{'/admin/order/'+${tUnit.id}}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-success">Detail</button>
+                    </form>
+                    <form th:action="@{/admin/order/delete/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" th:if="${tPage != null and tPage.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:class="${!tPage.hasPrevious() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/order(page=${tPage.number-1})}">Previous</a></li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, tPage.totalPages - 1)}"
+                th:class="${tPage.number == pageNum ? 'page-item active' : 'page-item'}"><a class="page-link" th:href="@{/admin/order(page=${pageNum})}" th:text="${pageNum + 1}"></a></li>
+            <li class="page-item" th:class="${!tPage.hasNext() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/admin/order(page=${tPage.number + 1})}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

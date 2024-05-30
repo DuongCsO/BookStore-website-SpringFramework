@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Product</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Category</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <h1>ADD TO CATEGORY</h1>
+    <table class="table table-striped">
+        <thead>
+        <th>id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+        </thead>
+        <tbody th:each="category: ${tPage}">
+        <tr>
+            <th th:text="${category.id}"></th>
+            <th ><a th:text="${category.name}" th:href="@{'/admin/category/' + ${category.id}}"></a></th>
+            <th th:text="${category.description}"></th>
+            <th>
+                <div class="button-group" th:if="${!product2.contains(category.id)}">
+                    <form  th:action="@{'/admin/category-product/create/'+${category.id}+'/'+${product1.id}}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Add</button>
+                    </form>
+
+                    <p th:if="${success!=null}" th:text="Add success" class="text-success"></p>
+                </div>
+                <div class="button-group" th:if="${product2.contains(category.id)}">
+                    <form th:action="@{'/admin/category-product/delete/'+${category.id}+'/'+${product1.id}}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" th:if="${tPage != null and tPage.totalPages > 1}">
+        <ul class="pagination">
+            <li class="page-item" th:class="${!tPage.hasPrevious() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/admin/category-product/create/'+${product1.id}+'?page='+${tPage.number-1}}">Previous</a></li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, tPage.totalPages - 1)}"
+                th:class="${tPage.number == pageNum ? 'page-item active' : 'page-item'}"><a class="page-link" th:href="@{'/admin/category-product/create/'+${product1.id}+'?page='+${pageNum}}" th:text="${pageNum + 1}"></a></li>
+            <li class="page-item" th:class="${!tPage.hasNext() ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/admin/category-product/create/'+${product1.id}+'?page='+${tPage.number + 1}}">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

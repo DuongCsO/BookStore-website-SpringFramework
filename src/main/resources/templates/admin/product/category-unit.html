@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Product</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Category</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <h2>CATEGORY INFORMATION</h2>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <td th:text="${tUnit.id}"></td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td th:text="${tUnit.name}"></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td th:text="${tUnit.description}"></td>
+        </tr>
+        <tr>
+            <th>Created On</th>
+            <td th:text="${tUnit.createdOn}"></td>
+        </tr>
+        <tr>
+            <th>Updated On</th>
+            <td th:text="${tUnit.updatedOn}"></td>
+        </tr>
+        <tr>
+            <th>Created By</th>
+            <td th:text="${tUnit.createdBy!=null}?${tUnit.createdBy.fullname}:'Null'"></td>
+        </tr>
+        <tr>
+            <th>Updated By</th>
+            <td th:text="${tUnit.updatedBy!=null}?${tUnit.updatedBy.fullname}:'Null'"></td>
+        </tr>
+    </table>
+    <div class="button-group">
+        <form th:action="@{'/admin/category/edit/'+${tUnit.id}}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+        <form th:action="@{/admin/category/delete/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+        <form th:action="@{/admin/category}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-dark">Back</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

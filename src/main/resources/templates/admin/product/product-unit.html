@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Product</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Product</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+<h2>PRODUCT INFORMATION</h2>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <td th:text="${tUnit.id}"></td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td th:text="${tUnit.name}"></td>
+        </tr>
+        <tr>
+            <th>Page Number</th>
+            <td th:text="${tUnit.pageNumber}"></td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td th:text="${tUnit.description}"></td>
+        </tr>
+        <tr>
+            <th>Cost</th>
+            <td th:text="${tUnit.cost}"></td>
+        </tr>
+        <tr>
+            <th>Quantity</th>
+            <td th:text="${tUnit.quantity}"></td>
+        </tr>
+        <tr>
+            <th>Publish Year</th>
+            <td th:text="${tUnit.publishYear}"></td>
+        </tr>
+        <tr>
+            <th>Language</th>
+            <td th:text="${tUnit.language}"></td>
+        </tr>
+        <tr>
+            <th>Form</th>
+            <td th:text="${tUnit.form}"></td>
+        </tr>
+        <tr>
+            <th>Image Cover
+            </th>
+            <td><img height="300px" th:src="@{'/'+${tUnit.image}}" class="col-md-6"/></td>
+        </tr>
+        <tr>
+            <th>Preview Image</th>
+            <td><img th:each="img:${preImgs}" th:src="@{'/'+${img}}" height="300px" class="col-md-3"/></td>
+        </tr>
+        <tr>
+            <th>Author</th>
+            <td th:text="${tUnit.author!=null}?${tUnit.author.name}:'No author'"></td>
+        </tr>
+        <tr>
+            <th>Publisher</th>
+            <td th:text="${tUnit.publisher!=null}?${tUnit.publisher.name}:'No publisher'"></td>
+        </tr>
+        <tr>
+            <th>Created On</th>
+            <td th:text="${tUnit.createdOn}"></td>
+        </tr>
+        <tr>
+            <th>Updated On</th>
+            <td th:text="${tUnit.updatedOn}"></td>
+        </tr>
+        <tr>
+            <th>Created By</th>
+            <td th:text="${tUnit.createdBy!=null}?${tUnit.createdBy.fullname}:'Null'"></td>
+        </tr>
+        <tr>
+            <th>Updated By</th>
+            <td th:text="${tUnit.updatedBy!=null}?${tUnit.updatedBy.fullname}:'Null'"></td>
+        </tr>
+    </table>
+    <div class="button-group">
+        <form th:action="@{'/admin/product/edit/'+${tUnit.id}}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-success">Sửa</button>
+        </form>
+        <form th:action="@{/admin/product/delete/{id}(id=${tUnit.id})}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+        </form>
+        <form th:action="@{/admin/product}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-dark">Quay lại</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

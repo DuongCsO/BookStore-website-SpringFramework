@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{customer/customer-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <div class="video-container justify-content-center">
+
+        <center>
+            <div class="col-md-9">
+                <form role="form" method="post" novalidate th:action="@{/video/search}" enctype="multipart/form-data">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm video đánh giá" name="searchQuery">
+                    <button class="btn btn-success" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <iframe class="col-md-8" height="600" style="display: flex; justify-content: center;"
+                    th:src="@{'https://www.youtube.com/embed/'+${videoId}}"
+                    frameborder="1" allow="autoplay;"
+                    allowfullscreen="1"></iframe>
+        </center>
+    </div>
+</div>
+</body>
+</html>

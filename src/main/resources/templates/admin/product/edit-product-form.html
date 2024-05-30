@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/product/admin-product-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div layout:fragment="nav-link2">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-0 ms-2">
+            <li class="breadcrumb-item">
+                <span>Home</span>
+            </li>
+            <li class="breadcrumb-item active"><span>Products</span></li>
+        </ol>
+    </nav>
+</div>
+<div layout:fragment="body">
+    <h1>EDIT PRODUCT</h1>
+    <form role="form" method="post" th:action="@{'/admin/product/edit/'+${tForm.id}}" th:object="${tForm}" enctype="multipart/form-data">
+        <div class="row">
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Name</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('name')?'form-control  is-invalid':'form-control'}" id="name" name="name" th:field="*{name}">
+                    <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('name')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-11">
+                <label class="form-label">Description</label>
+                <div class="input-group has-validation">
+                    <textarea rows="3" th:class="${#fields.hasErrors('description')?'form-control  is-invalid':'form-control'}" id="Description" name="Description" th:field="*{Description}"/>
+                    <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('description')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">Page Number</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('pageNumber')?'form-control  is-invalid':'form-control'}" id="pageNumber" name="pageNumber" th:field="*{pageNumber}">
+                    <div th:if="${#fields.hasErrors('pageNumber')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('pageNumber')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">Cost</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('cost')?'form-control  is-invalid':'form-control'}" id="Cost" name="Cost" th:field="*{Cost}">
+                    <div th:if="${#fields.hasErrors('cost')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('cost')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">Quantity</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('quantity')?'form-control  is-invalid':'form-control'}" id="Quantity" name="Quantity" th:field="*{Quantity}">
+                    <div th:if="${#fields.hasErrors('quantity')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('quantity')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">Publish Year</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('publishYear')?'form-control  is-invalid':'form-control'}" id="publishYear" name="publishYear" th:field="*{publishYear}">
+                    <div th:if="${#fields.hasErrors('publishYear')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('publishYear')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">Language</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('language')?'form-control  is-invalid':'form-control'}" id="language" name="language" th:field="*{language}">
+                    <div th:if="${#fields.hasErrors('language')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('language')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">Form</label>
+                <div class="input-group has-validation">
+                    <input type="text" th:class="${#fields.hasErrors('form')?'form-control  is-invalid':'form-control'}" id="form" name="form" th:field="*{form}">
+                    <div th:if="${#fields.hasErrors('form')}" class="invalid-feedback">
+                        <ul th:each="err : ${#fields.errors('form')}">
+                            <li th:text="${err}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Author</label>
+                <select class="form-select" id="author" th:field="*{author}">
+                    <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+                    <option th:value="${null}" th:text="Empty"></option>
+                </select>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label class="form-label">Publisher</label>
+                <select class="form-select" id="publisher" th:field="*{publisher}">
+                    <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                    <option th:value="${null}"  th:text="Empty"></option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="imageCover" class="form-label">Upload Image</label>
+                <input type="file" class="form-control" id="imageCover" name="imageCover">
+            </div>
+            <div class="mb-3">
+                <label for="images" class="form-label">Upload Images</label>
+                <input type="file" class="form-control" id="images" name="images" multiple>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-dark" th:href="@{/admin/product}">Back</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
